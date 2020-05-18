@@ -1,0 +1,14 @@
+# ! MongoDB configs.
+
+host: 127.0.0.1
+port: 27017
+database: "Discord"    # ENV: MONGODB_DATABASE
+requires_auth: Yes
+username: null        # ENV: MONGODB_USERNAME
+password: null        # ENV: MONGODB_PASSWORD
+uri: "you_token"               # ENV: MONGODB_URI
+
+
+# ! DiscordDB configs.
+
+channel_id: 586787372490948608

@@ -1,0 +1,3 @@
+default_min: 3
+default_max: 7
+buffer_cooldown: 54    # Time after which User is removed from buffer.

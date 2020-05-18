@@ -1,0 +1,12 @@
+pymongo
+aiohttp
+aioredis
+arrow
+cachetools
+discord.py
+DiscordDB
+image-processor-client
+motor
+pyyaml
+sentry-sdk
+dnspython
