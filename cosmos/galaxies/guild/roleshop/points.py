@@ -57,7 +57,7 @@ class RoleShopPoints(RoleShopBase):
             return await ctx.send_line(res)
 
         daily_points = await author_profile.take_daily_points(target_profile)
-        res = f"{ctx.emotes.web_emotion.b234}  {target_name}получили {daily_points}{ctx.emotes.web_emotion.g10} ежедневных монет."
+        res = f"{ctx.emotes.web_emotion.b234}  {target_name} получили {daily_points}{ctx.emotes.web_emotion.g10} ежедневных монет."
         await ctx.send_line(res)
 
     @points.command(name="фыввв", aliases=["фывв", "ыфв"])

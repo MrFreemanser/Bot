@@ -6,7 +6,7 @@ database: "Discord"    # ENV: MONGODB_DATABASE
 requires_auth: Yes
 username: null        # ENV: MONGODB_USERNAME
 password: null        # ENV: MONGODB_PASSWORD
-uri: "you_token"               # ENV: MONGODB_URI
+uri: "mongodb+srv://admin:31281080789@cluster0-kzpc2.gcp.mongodb.net/test?retryWrites=true&w=majority"               # ENV: MONGODB_URI
 
 
 # ! DiscordDB configs.

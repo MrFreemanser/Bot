@@ -29,7 +29,7 @@ class RoleShopBase(GuildBaseCog):
     async def _paginator_parser(ctx, roleshop_role, _):
         role = ctx.guild.get_role(roleshop_role.id)
         points = roleshop_role.points
-        return role.name, (f"`Цена:` **{points}**  {ctx.emotes.web_emotion.g10}\n`Роль:` {role.mention}")
+        return role.name, f"`Цена:` **{points}**  {ctx.emotes.web_emotion.g10}\n`Роль:` {role.mention}"
 
     @GuildBaseCog.group(name="купить", aliases=["магазин"], invoke_without_command=True)
     async def role_shop(self, ctx):

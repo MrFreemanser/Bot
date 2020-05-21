@@ -4,7 +4,6 @@ import sys
 import discord
 import traceback
 import asyncio
-
 from ...functions import Cog
 from cosmos import exceptions
 from discord.ext import commands
