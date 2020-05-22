@@ -132,7 +132,7 @@ class Levels(GuildBaseCog):
         """
         rewards = ctx.guild_profile.levels.get_rewards(channel)
         if not rewards:
-            return await ctx.send_line(f"❌ Мы ещё не установили {channel.title()} XP  на сервере.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx} Мы ещё не установили {channel.title()} XP  на сервере.")
         description = "```css\n Отображение уровней и их наград, присуждаемые за полученную XP```"
         if not level:
             paginator = ctx.get_field_paginator(
@@ -144,7 +144,7 @@ class Levels(GuildBaseCog):
             return await paginator.paginate()
         _reward = rewards.get(level)
         if not _reward:
-            return await ctx.send_line(f"❌    Награды для {channel.title()} не предназначены для {level} уровня.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Награды для {channel.title()} не предназначены для {level} уровня.")
         embed = self.bot.theme.embeds.primary()
         embed.description = description
         embed.set_author(name=f"Награды  {channel.title()} Level {level}", icon_url=ctx.guild.icon_url)
@@ -167,15 +167,15 @@ class Levels(GuildBaseCog):
         embed.add_field(name="Points", value=points)
         if await ctx.confirm(await ctx.send(embed=embed)):
             await ctx.guild_profile.levels.set_rewards(level, [role.id for role in roles], points, channel=channel)
-            await ctx.send_line(f"✅  Награда за {channel.title()} Level {level} была установлена.")
+            await ctx.send_line(f"{ctx.emotes.web_emotion.galka}  Награда за {channel.title()} Level {level} была установлена.")
 
     @rewards.command(name="remove", aliases=["delete"])
     @commands.has_permissions(administrator=True)
     async def remove_rewards(self, ctx, level: int, channel: ChannelConverter = "text"):
         """Remove any Text or Voice Level rewards set for specified level."""
         if not ctx.guild_profile.levels.get_rewards(channel).get(level):
-            return await ctx.send_line(f"❌    There are no rewards assigned for level {level}.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    There are no rewards assigned for level {level}.")
         if not await ctx.confirm():
             return
         await ctx.guild_profile.levels.remove_rewards(level, channel=channel)
-        await ctx.send_line(f"✅    Награда за {level} была удалена")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Награда за {level} была удалена")

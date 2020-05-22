@@ -14,19 +14,20 @@ class AdminCommands(Admin):
         if not await ctx.confirm():
             return
         await target.make_prime()
-        await ctx.send_line(f"🎉    {target.name} has been given prime.")
+        msg = await ctx.send_line(f"🎉    {target.name} has been given prime.", delete_after=10)
+        await ctx.message.delete(delay=5)
 
     @give_prime.error
     async def give_prime_error(self, ctx, error):
         if isinstance(error, commands.BadUnionArgument):
-            return await ctx.send_line(f"❌    A dark argument was passed.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    A dark argument was passed.")
 
     @Admin.command(name="removeprime")
     async def remove_prime(self, ctx, *, target: typing.Union[CosmosUserProfileConverter, CosmosGuildConverter]):
         if not await ctx.confirm():
             return
         await target.make_prime(make=False)
-        await ctx.send_line(f"✅    Removed prime from {target.name}.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Removed prime from {target.name}.")
 
     @remove_prime.error
     async def remove_prime_error(self, ctx, error):
@@ -37,4 +38,4 @@ class AdminCommands(Admin):
         if not await ctx.confirm():
             return
         await user.give_fermions(fermions)
-        await ctx.send_line(f"✅    Gave {fermions} fermions to {user.name}.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Gave {fermions} fermions to {user.name}.")

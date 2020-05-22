@@ -50,7 +50,7 @@ class ReactionRoles(Reactions):
 
         """
         if not ctx.guild_profile.reactions.roles:
-            return await ctx.send_line(f"❌    You haven't set any reaction roles yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You haven't set any reaction roles yet.")
         embed = ctx.embeds.one_line.primary(f"Reaction Roles", ctx.guild.icon_url)
         embed.description = "```css\nDisplaying all reaction roles attached to messages set in the server with IDs.```"
         for message_id, roles in ctx.guild_profile.reactions.roles.items():
@@ -75,9 +75,9 @@ class ReactionRoles(Reactions):
         # Lookup by message URL.
         # noinspection PyTypeChecker
         if len(roles) >= self.plugin.data.reactions.max_roles:
-            return await ctx.send_line(f"❌    You can't include anymore roles.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You can't include anymore roles.")
         if len(ctx.guild_profile.reactions.roles) >= self.plugin.data.reactions.max_messages:
-            return await ctx.send_line(f"❌    You cannot create anymore reaction roles.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You cannot create anymore reaction roles.")
         if not await ctx.confirm():
             return
         # noinspection PyTypeChecker
@@ -93,7 +93,7 @@ class ReactionRoles(Reactions):
         for _, emote in roles_emotes:
             await message.add_reaction(emote)
         await ctx.guild_profile.reactions.add_roles(message.id, roles)
-        await ctx.send_line(f"✅    Provided roles has been set as reaction roles.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Provided roles has been set as reaction roles.")
 
     @reaction_roles.command(name="remove", aliases=["delete"])
     async def remove_roles(self, ctx, message: typing.Union[discord.Message, int]):
@@ -105,11 +105,11 @@ class ReactionRoles(Reactions):
 
         """
         if not ctx.guild_profile.reactions.roles:
-            return await ctx.send_line(f"❌    {ctx.guild.name} has no reactions roles set.", ctx.guild.icon_url)
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    {ctx.guild.name} has no reactions roles set.", ctx.guild.icon_url)
         message_id = message.id if isinstance(message, discord.Message) else message
         if message_id not in ctx.guild_profile.reactions.roles:
             return await ctx.send_line("❌    That message doesn't contains any reaction roles.")
         if not await ctx.confirm():
             return
         await ctx.guild_profile.reactions.remove_roles(message_id)
-        await ctx.send_line(f"✅    Reaction roles has been removed for provided message.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Reaction roles has been removed for provided message.")

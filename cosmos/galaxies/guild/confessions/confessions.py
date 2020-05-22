@@ -48,16 +48,16 @@ class SecretConfessions(Cog):
 
         """
         if ctx.author not in guild_profile.guild.members:
-            return await ctx.send_line(f"❌    You can't make confession in server you're not in.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You can't make confession in server you're not in.")
         if not guild_profile.confessions_channel:
-            return await ctx.send_line(f"❌    Secret confessions isn't enabled in {guild_profile.guild.name}.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Secret confessions isn't enabled in {guild_profile.guild.name}.")
         identity = f"{random.choice(self.FACE_EMOTES)}    {Utility.get_random_strings(27)}#{random.randint(0000, 9999)}"
         embed = ctx.embed_line(identity)
         embed.description = confession
         message = await guild_profile.confessions_channel.send(embed=embed)
         meta = ConfessionMeta(guild_profile, identity, ctx.author, confession, message)
         self.bot.dispatch("confession", meta)
-        await ctx.send_line(f"✅    Your confession has been posted in {guild_profile.guild.name}.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Your confession has been posted in {guild_profile.guild.name}.")
 
     @confessions.command(name="set", aliases=["setup", "enable"])
     @commands.has_permissions(administrator=True)
@@ -69,7 +69,7 @@ class SecretConfessions(Cog):
         channel = channel or ctx.channel
         guild_profile = await ctx.fetch_guild_profile()
         await guild_profile.set_confessions_channel(channel)
-        await ctx.send_line(f"✅    Secret confessions has been set in {channel}.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Secret confessions has been set in {channel}.")
 
     @confessions.command(name="remove", aliases=["delete", "disable"])
     @commands.has_permissions(administrator=True)
@@ -77,4 +77,4 @@ class SecretConfessions(Cog):
         """Remove secret confessions from the server."""
         guild_profile = await ctx.fetch_guild_profile()
         await guild_profile.remove_confessions_channel()
-        await ctx.send_line(f"✅    Secret confessions has been removed.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Secret confessions has been removed.")

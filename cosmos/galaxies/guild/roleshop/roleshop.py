@@ -33,6 +33,7 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         It displays an interactive reaction based menu to choose your desired role if it's not specified.
 
         """
+        await ctx.message.delete(delay=15)
         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         roles = [role for role in ctx.guild_profile.roleshop.roles if role not in profile.roleshop.roles]
         # TODO: Maybe only include roles which can be purchased by that member because of less points.
@@ -41,17 +42,22 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         role = await self._get_role(ctx, role, roles, "Покупка ролей", description)
         _role = ctx.guild_profile.roleshop.roles.get(role.id)
         if _role in profile.roleshop.roles:
-            return await ctx.send_line(f"❌    Ты уже купил  {role.name}.")
-        if await ctx.confirm(f"⚠    Ты уверен, что хочешь купить {role.name}?"):
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Ты уже купил  {role.name}")
+        msg = await ctx.send_line(f":warning:    Ты уверен, что хочешь купить {role.name}?",delete_after=15)
+        if await ctx.confirm(msg):
             await ctx.guild_profile.roleshop.buy_role(profile, role.id)
-            await ctx.send_line(f"✅  Роль {role.name} приобретена. У тебя осталось {profile.points}{ctx.emotes.web_emotion.g10} золотых монет.")
-            if await ctx.confirm(f"{ctx.emotes.imortal_boost.g8}    Активировать роль {role.name} сейчас?"):
+            await ctx.send_line(f"{ctx.emotes.web_emotion.galka}  Роль {role.name} приобретена. У тебя осталось {profile.points}{ctx.emotes.web_emotion.g10} золотых монет.")
+            msg=await ctx.confirm(f"{ctx.emotes.imortal_boost.g8}    Активировать роль {role.name} сейчас?")
+            if await ctx.confirm(msg):
                 await ctx.author.add_roles(role, reason="Роль приобретена.")
+        await msg.delete(delay=15)
+        await ctx.send_line(delay=15)
+
 
     @buy_role.error
     async def buy_error(self, ctx, error):
         if isinstance(error, NotEnoughPointsError):
-            return await ctx.send_line(f"❌  Очень жаль, но у вас недостаточно {ctx.emotes.web_emotion.g10}")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}  Очень жаль, но у вас недостаточно {ctx.emotes.web_emotion.g10}")
 
     # @RoleShopSettings.role_shop.command(name="sell", inescapable=False)
     # async def sell_role(self, ctx, *, role: discord.Role = None):
@@ -61,11 +67,11 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
     #     role = await self._get_role(ctx, role, profile.roleshop.roles)
     #     _role = ctx.guild_profile.roleshop.roles.get(role.id)
     #     if _role not in profile.roleshop.roles:
-    #         return await ctx.send_line(f"❌    You haven't purchased {role.name} yet.")
+    #         return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You haven't purchased {role.name} yet.")
     #     if await ctx.confirm(f"⚠    Are you sure to sell {role.name}?"):
     #         await ctx.guild_profile.roleshop.sell_role(profile, role.id)
     #         await ctx.author.remove_roles(role)
-    #         await ctx.send_line(f"✅    You sold {role.name} earning {_role.points} золотых монет.")
+    #         await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    You sold {role.name} earning {_role.points} золотых монет.")
 
     @RoleShopSettings.role_shop.group(name="equip", aliases=["надеть"], invoke_without_command=True, inescapable=False)
     async def equip_role(self, ctx, *, role: discord.Role = None):
@@ -80,11 +86,11 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         role = await self._get_role(ctx, role, roles, "Меню магазина - Инвентарь", description)
         _role = ctx.guild_profile.roleshop.roles.get(role.id)
         if _role not in profile.roleshop.roles:
-            return await ctx.send_line(f"❌    Вы ещё не купили {role.name}.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Вы ещё не купили {role.name}.")
         if role in ctx.author.roles:
-            return await ctx.send_line(f"❌    Вы уже применили {role.name}.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Вы уже применили {role.name}.")
         await ctx.author.add_roles(role, reason="Роль применена из магазина.")
-        await ctx.send_line(f"✅   Роль {role.name} применена.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}   Роль {role.name} применена.")
 
     @equip_role.command(name="все")
     async def equip_all_roles(self, ctx):
@@ -106,9 +112,9 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
                       "\nВы можете продать роль и вернуть за нее деньги (но роль временно будет отображаться в инвентаре)```"
         role = await self._get_role(ctx, role, roles, "Меню магазина - Инвентарь", description)
         if role not in ctx.author.roles:
-            return await ctx.send_line(f"❌    Вы уже применили роль {role.name}.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Вы уже применили роль {role.name}.")
         await ctx.author.remove_roles(role)
-        await ctx.send_line(f"✅  Роль {role.name} снята.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}  Роль {role.name} снята.")
 
     @unequip_role.command(name="all")
     async def unequip_all_roles(self, ctx):

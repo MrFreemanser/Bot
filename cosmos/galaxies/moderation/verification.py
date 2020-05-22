@@ -51,13 +51,13 @@ class UserVerification(Cog):
         for channel in ctx.guild.channels:
             await channel.set_permissions(role, read_messages=False)
         await ctx.guild_profile.verification.set_role(role)
-        await ctx.send_line(f"✅    {role.name} has been assigned as verification role.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    {role.name} has been assigned as verification role.")
 
     @verification_role.command(name="remove", aliases=["delete"])
     async def remove_verification_role(self, ctx):
         """Removes the verification role hence disabling all of the verification methods from the server."""
         await ctx.guild_profile.verification.remove_role()
-        await ctx.send_line(f"✅    Verification role has been removed and methods are disabled.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Verification role has been removed and methods are disabled.")
 
     @verification.group(name="reaction", aliases=["react"])
     async def reaction_verification(self, ctx):
@@ -76,7 +76,7 @@ class UserVerification(Cog):
 
         """
         if not ctx.guild_profile.verification.role:
-            return await ctx.send_line(f"❌    Please set the verification role before using verification methods.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Please set the verification role before using verification methods.")
         emote = emote or "🔓"
         if not message:
             channel = channel or ctx.channel
@@ -94,7 +94,7 @@ class UserVerification(Cog):
                                               read_messages=True, send_messages=False)
         await message.channel.set_permissions(ctx.guild.default_role, read_messages=False)
         await ctx.guild_profile.verification.set_reaction_verification(message.id)
-        await ctx.send_line(f"✅    Reaction verification has been set in the server.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Reaction verification has been set in the server.")
 
     @reaction_verification.command(name="remove", aliases=["delete"])
     async def remove_reaction_verification(self, ctx):
@@ -102,4 +102,4 @@ class UserVerification(Cog):
         if not await ctx.confirm():
             return
         await ctx.guild_profile.verification.remove_reaction_verification()
-        await ctx.send_line(f"✅    Reaction verification method has been removed from the server.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Reaction verification method has been removed from the server.")

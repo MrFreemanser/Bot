@@ -70,7 +70,7 @@ class WelcomeMessage(WelcomeBase):
 
         """
         if not ctx.guild_profile.welcome_message:
-            return await ctx.send_line(f"❌    Welcome Message has not been set in the server.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Welcome Message has not been set in the server.")
         embed = ctx.embed_line("Welcome Message Template", ctx.guild.icon_url)
         embed.description = f"```css\n{ctx.guild_profile.welcome_message}```"
         await ctx.send(embed=embed)
@@ -83,7 +83,7 @@ class WelcomeMessage(WelcomeBase):
         """
         channel = channel or ctx.channel
         await ctx.guild_profile.set_welcome_message(message, channel)
-        await ctx.send_line(f"✅    Welcome messages has been set in #{channel} channel.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Welcome messages has been set in #{channel} channel.")
 
     @welcome_message.command(name="remove", aliases=["delete"])
     async def remove_welcome_message(self, ctx):
@@ -91,7 +91,7 @@ class WelcomeMessage(WelcomeBase):
         if not await ctx.confirm():
             return
         await ctx.guild_profile.remove_welcome_message()
-        await ctx.send_line(f"✅    Welcome messages has been disabled and removed.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Welcome messages has been disabled and removed.")
 
     @WelcomeBase.welcome.group(name="directmessage", aliases=["dm", "directmsg"], invoke_without_command=True)
     async def direct_message(self, ctx):
@@ -101,7 +101,7 @@ class WelcomeMessage(WelcomeBase):
 
         """
         if not ctx.guild_profile.direct_welcome_message:
-            return await ctx.send_line(f"❌    Direct Welcome Messages has not been set in the server.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Direct Welcome Messages has not been set in the server.")
         embed = ctx.embed_line("Direct Welcome Message Template", ctx.guild.icon_url)
         embed.description = f"```css\n{ctx.guild_profile.direct_welcome_message}```"
         await ctx.send(embed=embed)
@@ -113,7 +113,7 @@ class WelcomeMessage(WelcomeBase):
 
         """
         await ctx.guild_profile.set_direct_welcome_message(message)
-        await ctx.send_line(f"✅    Direct Message welcome messages has been set.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Direct Message welcome messages has been set.")
 
     @direct_message.command(name="remove", aliases=["delete"])
     async def remove_direct_welcome_message(self, ctx):
@@ -121,4 +121,4 @@ class WelcomeMessage(WelcomeBase):
         if not await ctx.confirm():
             return
         await ctx.guild_profile.remove_direct_welcome_message()
-        await ctx.send_line(f"✅    Direct Message welcome messages has been disabled and removed.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Direct Message welcome messages has been disabled and removed.")

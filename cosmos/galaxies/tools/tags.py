@@ -21,7 +21,7 @@ class Tags(Cog):
         """Displays list of custom tags created and owned by you."""
         profile = await ctx.fetch_cosmos_user_profile()
         if not profile.tags:
-            return await ctx.send_line(f"❌    You haven't created any custom tags yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You haven't created any custom tags yet.")
         paginator = ctx.get_field_paginator(profile.tags, entry_parser=self.__tags_parser, inline=False)
         paginator.embed.set_author(name=f"{ctx.author.display_name}'s Custom Tags", icon_url=ctx.author.avatar_url)
         paginator.embed.description = "```css\nDisplaying custom tags created by you.```"
@@ -33,10 +33,10 @@ class Tags(Cog):
         """Retrieves and displays specified tag and all of its contents."""
         profile = await ctx.fetch_cosmos_user_profile()
         if not profile.tags:
-            return await ctx.send_line(f"❌    You haven't created any custom tags yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You haven't created any custom tags yet.")
         tag = profile.get_tag(name)
         if not tag:
-            return await ctx.send_line(f"❌    Can't find any tag with provided name.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Can't find any tag with provided name.")
         embed = ctx.embeds.one_line.primary(name, self.bot.theme.images.file)
         content = tag.content
         # Check if tag content contains any images and consider very first image url.
@@ -66,7 +66,7 @@ class Tags(Cog):
         if ctx.message.attachments:
             content += f" {ctx.message.attachments[0].url}"
         await profile.create_tag(name, content)
-        await ctx.send_line(f"✅    Tag {name} has been created.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Tag {name} has been created.")
 
     @tag.command(name="remove", aliases=["delete"])
     async def remove_tag(self, ctx, *, name=None):
@@ -78,8 +78,8 @@ class Tags(Cog):
             response = await menu.wait_for_response()
             name = response.entry.name
         if not profile.get_tag(name):
-            return await ctx.send_line(f"❌    You don't own any tag with such name.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You don't own any tag with such name.")
         if not await ctx.confirm(f"⚠   Are you sure to remove tag {name}?"):
             return
         await profile.remove_tag(name)
-        await ctx.send_line(f"✅    Tag {name} has been removed.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Tag {name} has been removed.")

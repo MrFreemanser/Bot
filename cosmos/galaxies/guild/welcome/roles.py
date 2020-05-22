@@ -28,7 +28,7 @@ class WelcomeRoles(WelcomeBase):
     async def welcome_roles(self, ctx):
         """Displays the list of roles being assigned to every new members joining the server."""
         if not ctx.guild_profile.welcome_roles:
-            return await ctx.send_line(f"❌    There are no roles assigned for welcome roles.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    There are no roles assigned for welcome roles.")
         embed = ctx.embed_line("Welcome Roles", ctx.author.avatar_url)
         role_mentions = [f"{ctx.emotes.misc.next} {role.mention}" for role in ctx.guild_profile.welcome_roles]
         embed.description = "\n".join(role_mentions) + "\n​"
@@ -39,7 +39,7 @@ class WelcomeRoles(WelcomeBase):
     async def set_welcome_roles(self, ctx, *roles: discord.Role):
         """Set roles which will be assigned to every new members joining your server."""
         await ctx.guild_profile.set_welcome_roles(roles)
-        await ctx.send_line(f"✅    Provided roles has been set for welcome roles.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Provided roles has been set for welcome roles.")
 
     @welcome_roles.command(name="remove", aliases=["delete", "clear"])
     async def remove_welcome_roles(self, ctx):
@@ -47,4 +47,4 @@ class WelcomeRoles(WelcomeBase):
         if not await ctx.confirm():
             return
         await ctx.guild_profile.remove_welcome_roles()
-        await ctx.send_line(f"✅    All of the roles has been removed from welcome roles.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    All of the roles has been removed from welcome roles.")

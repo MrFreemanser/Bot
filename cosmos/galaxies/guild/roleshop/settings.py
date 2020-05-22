@@ -24,13 +24,13 @@ class RoleShopSettings(RoleShopBase):
     async def create_role(self, ctx, points: int, *, role: typing.Union[discord.Role, str]):
         """Create a new or use specified role for the Role Shop."""
         if len(ctx.guild_profile.roleshop.roles) >= self.plugin.data.roleshop.max_roles:
-            res = f"❌  Извини, но в магазине доступно всего {self.plugin.data.roleshop.max_roles} ролей"
+            res = f"{ctx.emotes.web_emotion.xx}  Извини, но в магазине доступно всего {self.plugin.data.roleshop.max_roles} ролей"
             return await ctx.send_line(res)
 
         if isinstance(role, str):
             role = await ctx.guild.create_role(name=role, reason=f"Роль для магазина - создана. [{ctx.author}]")
         await ctx.guild_profile.roleshop.create_role(role.id, points)
-        await ctx.send_line(f"✅  {role.name} Добавлен в магазин за {points}{ctx.emotes.web_emotion.g10} золотых.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}  {role.name} Добавлен в магазин за {points}{ctx.emotes.web_emotion.g10} золотых.")
 
     @RoleShopBase.role_shop.command(name="удалить", aliases=["delete"])
     @has_permissions(manage_roles=True)
@@ -46,7 +46,7 @@ class RoleShopSettings(RoleShopBase):
             # await role.delete(reason=f"Role deleted from role shop. [{ctx.author}]")
             await ctx.guild_profile.roleshop.remove_role(role.id)
 
-            await ctx.send_line(f"✅    {role.name} была удалена из магазина.")
+            await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    {role.name} была удалена из магазина.")
 
     @RoleShopBase.role_shop.group(name="изменить", aliases=["edit"])
     @has_permissions(manage_roles=True)
@@ -66,4 +66,4 @@ class RoleShopSettings(RoleShopBase):
         if await ctx.confirm(f"⚠    Вы действительно хотите изменить стоимсть с {role.name} на {new_points}?"):
             await ctx.guild_profile.roleshop.set_points(role.id, new_points)
 
-            await ctx.send_line(f"✅   Стоимость {role.name} была изменена на {new_points}.")
+            await ctx.send_line(f"{ctx.emotes.web_emotion.galka}   Стоимость {role.name} была изменена на {new_points}.")
