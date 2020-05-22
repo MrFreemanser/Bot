@@ -1,4 +1,4 @@
 # ! Important discord configs.
 
-token: "Njk2MzYwMDc4OTk5Mjg5OTI3.XsXS0w.jaA_k1K6hAZt7xkDErSnpsMHBrI"    # ENV: DISCORD_TOKEN
-client_id: 696360078999289927
+token: "you_tokne"    # ENV: DISCORD_TOKEN
+client_id: Id_bot
