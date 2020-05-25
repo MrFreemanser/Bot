@@ -24,7 +24,7 @@ class RoleShopBase(GuildBaseCog):
         menu.embed.set_author(name=title, icon_url=ctx.author.avatar_url)
         response = await menu.wait_for_response()
         msg = menu.message
-        await msg.delete(delay=30)
+        await msg.delete(delay=10)
         return ctx.guild.get_role(response.entry.id)
         
 

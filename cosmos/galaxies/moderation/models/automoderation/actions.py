@@ -27,7 +27,7 @@ class AutoModerationActions(object):
     async def warn(self, *, message=None, **_):
         if message:
             await message.channel.send(message.author.mention, embed=self.embed(
-                    f"⚠    You are being warned for violating {self._trigger.name}."), delete_after=4)
+                    f"⚠    You are being warned for violating {self._trigger.name}."), delete_after=5)
             await ModerationAction(
                 self._trigger.profile, message.author, message.guild.me,
                 actions.Warned(True), self._reason).dispatch(

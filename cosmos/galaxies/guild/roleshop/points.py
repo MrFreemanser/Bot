@@ -38,7 +38,7 @@ class RoleShopPoints(RoleShopBase):
             return await ctx.send_line(f"{ctx.emotes.imortal_boost.d10} Боты не могут получать золото")
 
         profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
-        await ctx.send_line(f"{ctx.emotes.web_emotion.g11}  {adverb} {profile.points}{ctx.emotes.web_emotion.g10} золотых монет.", delete_after=15)
+        await ctx.send_line(f"{ctx.emotes.web_emotion.g11}  {adverb} {profile.points}{ctx.emotes.web_emotion.g10} золотых монет.", delete_after=5)
 
     @points.command(name="+")
     async def daily_points(self, ctx, *, member: discord.Member = None):
@@ -55,7 +55,7 @@ class RoleShopPoints(RoleShopBase):
                 target_name = member.display_name
         if not author_profile.can_take_daily_points:
             res = f"⏳    Вы можете получить ежедневные монеты снова через {author_profile.next_daily_points.humanize()}."
-            return await ctx.send_line(res)
+            return await ctx.send_line(res, delete_after=5)
         daily_points = await author_profile.take_daily_points(target_profile)
         res = f"{ctx.emotes.web_emotion.b234}  {target_name} получили {daily_points}{ctx.emotes.web_emotion.g10} ежедневных монет."
         await ctx.send_line(res)
@@ -64,13 +64,13 @@ class RoleShopPoints(RoleShopBase):
     async def transfer_points(self, ctx, points: int, *, member: discord.Member):
         """Transfer your points to specified member."""
         if member.bot:
-            return await ctx.send_line(f"{ctx.emotes.web_emotion.b235}  Зачем ты пытаешься это сделать ? Ну серьёзно ?")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.b235}  Зачем ты пытаешься это сделать ? Ну серьёзно ?", delete_after=5)
         if points < 0:
-            return await ctx.send_line(f"{ctx.emotes.web_emotion.b235}  Прости - но это уже слишком...")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.b235}  Прости - но это уже слишком...", delete_after=5)
         author_profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         target_profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
         if author_profile.points < points:
-            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx} Простите, но у вас недостатточно {ctx.emotes.web_emotion.g10} золотых монет.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx} Простите, но у вас недостатточно {ctx.emotes.web_emotion.g10} золотых монет.", delete_after=5)
         author_profile.give_points(-points)
         target_profile.give_points(points)
-        await ctx.send_line(f"{ctx.emotes.web_emotion.z23}    {ctx.author.name},ты поделился {points}{ctx.emotes.web_emotion.g10} c {member.display_name}.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.z23}    {ctx.author.name},ты поделился {points}{ctx.emotes.web_emotion.g10} c {member.display_name}.", delete_after=5)
