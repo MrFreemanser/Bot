@@ -45,7 +45,7 @@ class PrefixSettings(Settings):
         prefixes = self.cache.prefixes.get(ctx.guild.id, list())
         max_prefixes = self.plugin.data.guild.max_prefixes
         if len(prefixes) >= max_prefixes:
-            return await ctx.send_line(f"❌    Sorry but servers can have maximum up-to {max_prefixes} custom prefixes.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Sorry but servers can have maximum up-to {max_prefixes} custom prefixes.")
         prefixes.append(prefix)
         self.cache.prefixes.update({ctx.guild.id: prefixes})
         await self.plugin.collection.update_one(
@@ -67,7 +67,7 @@ class PrefixSettings(Settings):
             await self.plugin.collection.update_one(
                 {"guild_id": ctx.guild.id}, {"$addToSet": {"prefixes": prefix}}
             )
-        await ctx.send_line(f"✅    Prefix {prefix} has been removed from list of custom prefixes of {ctx.guild.name}.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Prefix {prefix} has been removed from list of custom prefixes of {ctx.guild.name}.")
 
     @prefix.command(name="clear", aliases=["clean"])
     async def clear_prefixes(self, ctx):
@@ -80,4 +80,4 @@ class PrefixSettings(Settings):
             return await ctx.send_line(f"{ctx.guild.name} doesn't has any custom prefixes set.", ctx.guild.icon_url)
         else:
             await self.plugin.collection.update_one({"guild_id": ctx.guild.id}, {"$unset": {"prefixes": ""}})
-        await ctx.send_line(f"✅    Cleared all custom prefixes of {ctx.guild.name}.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Cleared all custom prefixes of {ctx.guild.name}.")

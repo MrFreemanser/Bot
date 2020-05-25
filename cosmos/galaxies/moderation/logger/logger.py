@@ -48,7 +48,7 @@ class Logger(LoggerEvents):
         """Displays list of loggers enabled in different channels."""
         guild_profile = await ctx.fetch_guild_profile()
         if not guild_profile.loggers:
-            return await ctx.send_line(f"❌    {ctx.guild.name} doesn't has any loggers enabled.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    {ctx.guild.name} doesn't has any loggers enabled.")
         embed = ctx.embeds.one_line.primary(f"Loggers", ctx.guild.icon_url)
         embed.description = "```css\nDisplaying all active Loggers and channel its enabled in.```"
         for logger in guild_profile.loggers:
@@ -72,13 +72,13 @@ class Logger(LoggerEvents):
         loggers = [name for name in self.loggers if not guild_profile.get_logger(name)]
         name = name or await self.__get_logger_name_from_menu(ctx, loggers)
         if name not in self.loggers:
-            return await ctx.send_line(f"❌    Sorry but logging for event '{name}' isn't supported yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Sorry but logging for event '{name}' isn't supported yet.")
         logger = guild_profile.get_logger(name)
         if logger:
-            return await ctx.send_line(f"❌    Logs for event '{logger.name}' is already enabled in #{logger.channel}")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Logs for event '{logger.name}' is already enabled in #{logger.channel}")
 
         await guild_profile.enable_logger(name, channel)
-        await ctx.send_line(f"✅    Logs for event '{name}' has been enabled in #{channel.name}.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Logs for event '{name}' has been enabled in #{channel.name}.")
 
     @logger.command(name="disable", aliases=["remove"])
     async def disable_logger(self, ctx, *, name: NameConvertor = None):
@@ -87,10 +87,10 @@ class Logger(LoggerEvents):
         loggers = [logger.name for logger in guild_profile.loggers]
         name = name or await self.__get_logger_name_from_menu(ctx, loggers)
         if name not in self.loggers:
-            return await ctx.send_line(f"❌    Sorry but logging for event '{name}' isn't supported yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Sorry but logging for event '{name}' isn't supported yet.")
         logger = guild_profile.get_logger(name)
         if not logger:
-            return await ctx.send_line(f"❌    Logs for event '{name}' isn't' enabled yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Logs for event '{name}' isn't' enabled yet.")
 
         await guild_profile.remove_logger(name)
-        await ctx.send_line(f"✅    Logs for event '{name}' has been removed.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Logs for event '{name}' has been removed.")

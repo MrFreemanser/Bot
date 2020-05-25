@@ -37,7 +37,7 @@ class Reactor(GuildBaseCog):
         channel = channel or ctx.channel
         reactor = ctx.guild_profile.reactors.get_reactor(channel.id)
         if not reactor:
-            return await ctx.send_line(f"❌    There's no reactor enabled in #{channel} yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    There's no reactor enabled in #{channel} yet.")
         embed = ctx.embeds.one_line.primary(f"#{channel.name} Reactor", ctx.guild.icon_url)
         embed.description = "**Emotes:** " + " ".join([str(emote) for emote in reactor.emotes])
         await ctx.send(embed=embed)
@@ -60,17 +60,17 @@ class Reactor(GuildBaseCog):
                 return await ctx.send_line("❌  Пожалуйста, предоставь поддерживаемые Discrod - эмоции.")
         if await ctx.confirm(f"❓    Вы уверены, что хотите включить и установить выбранные реакции в #{channel}?"):
             await ctx.guild_profile.reactors.set_reactor(channel, emotes)
-            await ctx.send_line(f"✅    Реакция в #{channel} активирована.")
+            await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Реакция в #{channel} активирована.")
 
     @_reactor.command(name="remove", aliases=["delete"])
     async def remove_reactor(self, ctx, channel: discord.TextChannel = None):
         """Removes any reactor set in current or specified channel."""
         channel = channel or ctx.channel
         if not ctx.guild_profile.reactors.get_reactor(channel.id):
-            return await ctx.send_line(f"❌    В  #{channel} нету реакций.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    В  #{channel} нету реакций.")
         if await ctx.confirm(f"⚠   Вы уверены, что хоите удалить реакцию с #{channel}?"):
             await ctx.guild_profile.reactors.remove_reactor(channel)
-            await ctx.send_line(f"✅    Реакция была удалена с #{channel}.")
+            await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Реакция была удалена с #{channel}.")
 
     @_reactor.command(name="enable", aliases=["on"])
     async def enable_reactor(self, ctx, channel: discord.TextChannel = None):
@@ -78,9 +78,9 @@ class Reactor(GuildBaseCog):
         channel = channel or ctx.channel
         reactor = ctx.guild_profile.reactors.get_reactor(channel.id)
         if not reactor:
-            return await ctx.send_line(f"❌   В #{channel} ещё не увключены реакции.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}   В #{channel} ещё не увключены реакции.")
         await ctx.guild_profile.reactors.enable_reactor(reactor)
-        await ctx.send_line(f"✅   Реакция была включена в #{channel}.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}   Реакция была включена в #{channel}.")
 
     @_reactor.command(name="disable", aliases=["off"])
     async def disable_reactor(self, ctx, channel: discord.TextChannel = None):
@@ -88,6 +88,6 @@ class Reactor(GuildBaseCog):
         channel = channel or ctx.channel
         reactor = ctx.guild_profile.reactors.get_reactor(channel.id)
         if not reactor:
-            return await ctx.send_line(f"❌    В #{channel} ещё не включены реакций")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    В #{channel} ещё не включены реакций")
         await ctx.guild_profile.reactors.enable_reactor(reactor, enabled=False)
-        await ctx.send_line(f"✅    Реакции включена в #{channel}.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Реакции включена в #{channel}.")

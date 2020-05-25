@@ -28,6 +28,7 @@ class RoleShopPoints(RoleShopBase):
     @RoleShopBase.group(name="баланс", invoke_without_command=True)
     async def points(self, ctx, *, member: discord.Member = None):
         """Displays Guild Points earned by you or specified member."""
+        await ctx.message.delete(delay=5)
         if member:
             adverb = f"{member.name}, у тебя в кармане"
         else:
@@ -37,7 +38,7 @@ class RoleShopPoints(RoleShopBase):
             return await ctx.send_line(f"{ctx.emotes.imortal_boost.d10} Боты не могут получать золото")
 
         profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
-        await ctx.send_line(f"{ctx.emotes.web_emotion.g11}  {adverb} {profile.points}{ctx.emotes.web_emotion.g10} золотых монет.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.g11}  {adverb} {profile.points}{ctx.emotes.web_emotion.g10} золотых монет.", delete_after=15)
 
     @points.command(name="+")
     async def daily_points(self, ctx, *, member: discord.Member = None):
@@ -55,7 +56,6 @@ class RoleShopPoints(RoleShopBase):
         if not author_profile.can_take_daily_points:
             res = f"⏳    Вы можете получить ежедневные монеты снова через {author_profile.next_daily_points.humanize()}."
             return await ctx.send_line(res)
-
         daily_points = await author_profile.take_daily_points(target_profile)
         res = f"{ctx.emotes.web_emotion.b234}  {target_name} получили {daily_points}{ctx.emotes.web_emotion.g10} ежедневных монет."
         await ctx.send_line(res)
@@ -70,7 +70,7 @@ class RoleShopPoints(RoleShopBase):
         author_profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         target_profile = await self.bot.profile_cache.get_guild_profile(member.id, ctx.guild.id)
         if author_profile.points < points:
-            return await ctx.send_line(f"❌ Простите, но у вас недостатточно {ctx.emotes.web_emotion.g10} золотых монет.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx} Простите, но у вас недостатточно {ctx.emotes.web_emotion.g10} золотых монет.")
         author_profile.give_points(-points)
         target_profile.give_points(points)
         await ctx.send_line(f"{ctx.emotes.web_emotion.z23}    {ctx.author.name},ты поделился {points}{ctx.emotes.web_emotion.g10} c {member.display_name}.")

@@ -81,7 +81,7 @@ class Evaluator(Admin):
                 self._last_result = ret
 
                 try:
-                    embed = ctx.embed_line(f"✅    Evaluated in {round(evaluated_in, 3)} seconds.")
+                    embed = ctx.embed_line(f"{ctx.emotes.web_emotion.galka}    Evaluated in {round(evaluated_in, 3)} seconds.")
                     embed.description = f"```py\n{body}\n```"
                     if value:
                         embed.add_field(name="Standard Output", value=f'```py\n{value}\n```')

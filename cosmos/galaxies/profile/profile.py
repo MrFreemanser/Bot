@@ -37,7 +37,7 @@ class Profile(Cog):
         """Add description to your profile. The profile description can't exceed char length of 250."""
         max_words = self.plugin.data.profile.max_description_length
         if len(description) > max_words:
-            res = f"❌    Sorry but profile description cannot exceed {max_words} word limit."
+            res = f"{ctx.emotes.web_emotion.xx}    Sorry but profile description cannot exceed {max_words} word limit."
             return await ctx.send_line(res)
         profile = await self.cache.get_profile(ctx.author.id)
         await profile.set_description(description)

@@ -11,14 +11,14 @@ class ActionConvertor(commands.Converter):
         try:
             return getattr(triggers.AutoModerationActions, argument.lower()).__name__
         except AttributeError:
-            raise commands.BadArgument(f"❌    Action {argument} isn't supported yet.")
+            raise commands.BadArgument(f"{ctx.emotes.web_emotion.xx}    Action {argument} isn't supported yet.")
 
 
 class TriggerConvertor(commands.Converter):
 
     async def convert(self, ctx, argument):
         if argument.lower() not in triggers.__triggers__:
-            raise commands.BadArgument(f"❌    Trigger or violation {argument} isn't supported yet.")
+            raise commands.BadArgument(f"{ctx.emotes.web_emotion.xx}    Trigger or violation {argument} isn't supported yet.")
         return argument.lower()
 
 
@@ -114,7 +114,7 @@ class AutoModeration(Cog):
         """Sets a new Auto Moderation trigger with specified actions."""
         guild_profile = await ctx.fetch_guild_profile()
         await guild_profile.auto_moderation.create_trigger(trigger, actions)
-        await ctx.send_line(f"✅    {trigger} auto moderation trigger or violation has been created.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    {trigger} auto moderation trigger or violation has been created.")
 
     @create_trigger.error
     async def create_trigger_error(self, ctx, error):
@@ -126,9 +126,9 @@ class AutoModeration(Cog):
         """Removes specified Auto Moderation trigger."""
         guild_profile = await ctx.fetch_guild_profile()
         if trigger not in guild_profile.auto_moderation.triggers:
-            return await ctx.send_line(f"❌    You haven't created that trigger yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You haven't created that trigger yet.")
         await guild_profile.auto_moderation.remove_trigger(trigger)
-        await ctx.send_line(f"✅    {trigger} auto moderation trigger or violation has been removed.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    {trigger} auto moderation trigger or violation has been removed.")
 
     @Cog.group(name="banword", aliases=["bannedwords", "banwords"], invoke_without_command=True)
     async def ban_word(self, ctx, word=None):
@@ -136,12 +136,12 @@ class AutoModeration(Cog):
         guild_profile = await ctx.fetch_guild_profile()
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
         if not trigger:
-            return await ctx.send_line(f"❌    You haven't set banned_words trigger or violation yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You haven't set banned_words trigger or violation yet.")
         if len(trigger.words) >= self.plugin.data.auto_moderation.max_banned_words:
             return await ctx.send_line("❌    Sorry, but you can't ban anymore words.")
         if not word:
             if not trigger.words:
-                return await ctx.send_line(f"❌    You haven't banned any words yet.")
+                return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You haven't banned any words yet.")
             embed = ctx.embeds.primary()
             embed.title = "List of banned words"
             embed.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
@@ -153,7 +153,7 @@ class AutoModeration(Cog):
             # TODO: Provide, accept banned words file as well.
             return await ctx.send(embed=embed)
         await guild_profile.auto_moderation.ban_word(word)
-        await ctx.send_line(f"✅    {word} has been added to list of banned words.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    {word} has been added to list of banned words.")
 
     @ban_word.command(name="clear", aliases=["clean", "purge"])
     async def clear_banned_words(self, ctx):
@@ -163,8 +163,8 @@ class AutoModeration(Cog):
             return
         trigger = guild_profile.auto_moderation.triggers.get("banned_words")
         if not trigger:
-            return await ctx.send_line(f"❌    You haven't set {trigger.name} trigger or violation yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You haven't set {trigger.name} trigger or violation yet.")
         await guild_profile.auto_moderation.clear_banned_words()
-        await ctx.send_line(f"✅    List of banned words in this server has been cleared.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    List of banned words in this server has been cleared.")
 
     # TODO: Command to set auto mute timer.

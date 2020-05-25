@@ -123,7 +123,7 @@ class Moderation(Cog):
             _id = member
         profile = await ctx.fetch_member_profile(_id)
         if not profile.moderation_logs:
-            return await ctx.send_line(f"❌    {member.name} has no recorded moderation logs.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    {member.name} has no recorded moderation logs.")
         paginator = ctx.get_field_paginator(profile.moderation_logs, entry_parser=self.__modlogs_parser, inline=False)
         paginator.embed.description = f"**User:** `{member}`\n**User ID:** `{_id}`"
         paginator.embed.set_author(name="Moderation Logs", icon_url=member.avatar_url)
@@ -139,19 +139,19 @@ class Moderation(Cog):
             return
         profile = await ctx.fetch_member_profile(member.id)
         await profile.clear_moderation_logs()
-        await ctx.send_line(f"✅    Moderation logs of {member} has been purged.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Moderation logs of {member} has been purged.")
 
     @Cog.command(name="warn", inescapable=False)
     @check_mod(kick_members=True)
     async def warn(self, ctx, member: discord.Member, *, reason):
         """Issues a warning to specified member. Also notifies them automatically by direct message."""
         if not check_hierarchy(ctx.author, member):
-            return await ctx.send_line(f"❌    You can't warn {member}.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You can't warn {member}.")
         action = await self.__get_action(ctx, member, actions.Warned, reason)
         if await action.dispatch(f"⚠    You were warned in {ctx.guild.name}."):
-            res = f"✅    {member} has been warned."
+            res = f"{ctx.emotes.web_emotion.galka}    {member} has been warned."
         else:
-            res = f"✅    Failed to warn {member}. Warning logged."
+            res = f"{ctx.emotes.web_emotion.galka}    Failed to warn {member}. Warning logged."
         await ctx.send_line(res)
 
     @Cog.command(name="kick", inescapable=False)
@@ -160,11 +160,11 @@ class Moderation(Cog):
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         """Kicks specified member from the server. It also notifies them automatically along with the given reason."""
         if not check_hierarchy(ctx.author, member):
-            return await ctx.send_line(f"❌    You can't kick {member}.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You can't kick {member}.")
         action = await self.__get_action(ctx, member, actions.Kicked, reason)
         await action.dispatch(f"👢    You were kicked from {ctx.guild.name}.")
         await member.kick(reason=reason)
-        embed = ctx.embed_line(f"✅    {member} has been kicked from the server.")
+        embed = ctx.embed_line(f"{ctx.emotes.web_emotion.galka}    {member} has been kicked from the server.")
         await self.__inject_presets(ctx, embed)
         await ctx.send(embed=embed)
 
@@ -181,13 +181,13 @@ class Moderation(Cog):
         try:
             if isinstance(member, discord.Member):
                 if not check_hierarchy(ctx.author, member):
-                    return await ctx.send_line(f"❌    You can't ban {member}.")
+                    return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You can't ban {member}.")
                 await member.ban(reason=reason)
             else:
                 await ctx.guild.ban(discord.Object(member), reason=reason)
         except discord.HTTPException:
-            return await ctx.send_line(f"❌    Failed to ban {member}.")
-        embed = ctx.embed_line(f"✅    {member} has been banned from the server.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Failed to ban {member}.")
+        embed = ctx.embed_line(f"{ctx.emotes.web_emotion.galka}    {member} has been banned from the server.")
         await self.__inject_presets(ctx, embed)
         await ctx.send(embed=embed)
 
@@ -200,9 +200,9 @@ class Moderation(Cog):
         try:
             await ctx.guild.unban(discord.Object(user_id), reason=reason)
         except discord.HTTPException:
-            return await ctx.send_line(f"❌    Failed to unban {user_id}.")
-        await action.dispatch(f"✅    You were unbanned from {ctx.guild.name}.")
-        await ctx.send_line(f"✅    {user_id} has been unbanned.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Failed to unban {user_id}.")
+        await action.dispatch(f"{ctx.emotes.web_emotion.galka}    You were unbanned from {ctx.guild.name}.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    {user_id} has been unbanned.")
 
     @Cog.group(name="mute", invoke_without_command=True, inescapable=False)
     @check_voice_perms(mute_members=True)
@@ -212,12 +212,12 @@ class Moderation(Cog):
 
         """
         if not check_hierarchy(ctx.author, member):
-            return await ctx.send_line(f"❌    You can't mute {member}.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You can't mute {member}.")
         action = await self.__get_action(ctx, member, actions.Muted, reason)
         guild_profile = await ctx.fetch_guild_profile()
         muted_role = ctx.guild.get_role(guild_profile.roles.get("muted"))
         if not muted_role:
-            return await ctx.send_line(f"❌    Muted role has not been set yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Muted role has not been set yet.")
         try:
             await member.edit(mute=True, reason=reason)
         except discord.HTTPException:
@@ -225,7 +225,7 @@ class Moderation(Cog):
         finally:
             await member.add_roles(muted_role, reason=reason)
         await action.dispatch(f"🤐    You were muted in {ctx.guild.name}.")
-        await ctx.send_line(f"✅    {member} has been muted.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    {member} has been muted.")
         # TODO: Add an optional time duration.
         # TODO: Keep track of member leaving and joining back guild.
 
@@ -237,17 +237,17 @@ class Moderation(Cog):
         guild_profile = await ctx.fetch_guild_profile()
         muted_role = ctx.guild.get_role(guild_profile.roles.get("muted"))
         if not muted_role:
-            return await ctx.send_line(f"❌    Muted role has not been set yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    Muted role has not been set yet.")
         if muted_role not in member.roles:
-            return await ctx.send_line(f"❌    {member} is not muted yet.")
+            return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    {member} is not muted yet.")
         try:
             await member.edit(mute=False)
         except discord.HTTPException:
             pass
         finally:
             await member.remove_roles(muted_role)
-        await action.dispatch(f"✅    You have been unmuted in {ctx.guild.name}.")
-        await ctx.send_line(f"✅    {member} has been unmuted.")
+        await action.dispatch(f"{ctx.emotes.web_emotion.galka}    You have been unmuted in {ctx.guild.name}.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    {member} has been unmuted.")
 
     @mute.command(name="role")
     @commands.has_permissions(administrator=True)
@@ -264,5 +264,5 @@ class Moderation(Cog):
             for channel in ctx.guild.text_channels:
                 await channel.set_permissions(role, send_messages=False)
         await guild_profile.set_role("muted", role.id)
-        await ctx.send_line(f"✅    {role.name} has been assigned to be used as muted role.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    {role.name} has been assigned to be used as muted role.")
         # TODO: Set overrides if new channel has been created.

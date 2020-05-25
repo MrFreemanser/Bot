@@ -86,7 +86,7 @@ class CosmosPermissions(Settings):
         channels = channels or (ctx.channel, )
         await ctx.guild_profile.permissions.disable_function(function, channels)
         # noinspection PyUnresolvedReferences
-        await ctx.send_line(f"✅    {function.name} has been disabled in specified channels.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    {function.name} has been disabled in specified channels.")
 
     @Settings.group(name="enable", invoke_without_command=True)
     async def enable(self, ctx, function: typing.Union[CommandConverter, PluginConverter, GalaxyConverter],
@@ -98,14 +98,14 @@ class CosmosPermissions(Settings):
         channels = channels or (ctx.channel, )
         await ctx.guild_profile.permissions.enable_function(function, channels)
         # noinspection PyUnresolvedReferences
-        await ctx.send_line(f"✅    {function.name} has been enabled back in specified channels.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    {function.name} has been enabled back in specified channels.")
 
     @disable.command(name="channels", aliases=["channel"])
     async def disable_channel(self, ctx, *channels: discord.TextChannel):
         """Disables bot commands and most of its automatic messages in current or provided channels."""
         channels = channels or (ctx.channel, )
         await ctx.guild_profile.permissions.disable_channels(channels)
-        await ctx.send_line(f"✅    Bot commands and messages has been disabled in specified channels.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Bot commands and messages has been disabled in specified channels.")
 
     @enable.command(name="channels", aliases=["channel"])
     async def enable_channel(self, ctx, *channels: discord.TextChannel):
@@ -115,8 +115,8 @@ class CosmosPermissions(Settings):
         """
         channels = channels or (ctx.channel, )
         await ctx.guild_profile.permissions.enable_channels(channels)
-        await ctx.send_line(f"✅    Bot commands and messages has been enabled in specified channels.")
+        await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    Bot commands and messages has been enabled in specified channels.")
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error.original, AttributeError):
-            await ctx.send_line(f"❌    You cannot disable that function.")
+            await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You cannot disable that function.")

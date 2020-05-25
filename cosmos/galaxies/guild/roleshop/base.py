@@ -23,7 +23,10 @@ class RoleShopBase(GuildBaseCog):
         menu.embed.description = description
         menu.embed.set_author(name=title, icon_url=ctx.author.avatar_url)
         response = await menu.wait_for_response()
+        msg = menu.message
+        await msg.delete(delay=30)
         return ctx.guild.get_role(response.entry.id)
+        
 
     @staticmethod
     async def _paginator_parser(ctx, roleshop_role, _):
@@ -34,6 +37,7 @@ class RoleShopBase(GuildBaseCog):
     @GuildBaseCog.group(name="купить", aliases=["магазин"], invoke_without_command=True)
     async def role_shop(self, ctx):
         """Displays all of the roles which can be purchased from role shop."""
+        await ctx.message.delete(delay=5)
         if not ctx.guild_profile.roleshop:
             return await ctx.send_line(f"{ctx.emotes.imortal_boost.g8} На данный момент в магазине пусто.")
         paginator = ctx.get_field_paginator(ctx.guild_profile.roleshop.roles, entry_parser=self._paginator_parser)
@@ -46,4 +50,4 @@ class RoleShopBase(GuildBaseCog):
     @role_shop.error
     async def role_shop_error(self, ctx, error):    # TODO: Override Command with custom dispatch_error method.
         if isinstance(error, NotRoleShopRoleError):
-            await ctx.send_line(f"❌   Роль  {error.role.name} отсутствует в магазине.")
+            await ctx.send_line(f"{ctx.emotes.web_emotion.xx}   Роль  {error.role.name} отсутствует в магазине.")
