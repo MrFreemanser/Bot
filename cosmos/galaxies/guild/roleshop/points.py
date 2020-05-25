@@ -20,8 +20,6 @@ class RoleShopPoints(RoleShopBase):
         if not message.guild:
             return
         profile = await self.bot.profile_cache.get_guild_profile(message.author.id, message.guild.id)
-        if message.content == "Hello World!":
-             profile.give_points(10)
         
         
 
