@@ -43,6 +43,7 @@ class RoleShopPoints(RoleShopBase):
     @points.command(name="+")
     async def daily_points(self, ctx, *, member: discord.Member = None):
         """Lets you claim your daily золотых монет. Specify any member to let them have your daily золотых монет."""
+        await ctx.message.delete(delay=5)
         author_profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
         target_name = "Вы"
         if (member and member.bot) or not member:
@@ -58,7 +59,7 @@ class RoleShopPoints(RoleShopBase):
             return await ctx.send_line(res, delete_after=5)
         daily_points = await author_profile.take_daily_points(target_profile)
         res = f"{ctx.emotes.web_emotion.b234}  {target_name} получили {daily_points}{ctx.emotes.web_emotion.g10} ежедневных монет."
-        await ctx.send_line(res)
+        await ctx.send_line(res, delete_after=5)
 
     @points.command(name="фыввв", aliases=["фывв", "ыфв"])
     async def transfer_points(self, ctx, points: int, *, member: discord.Member):
