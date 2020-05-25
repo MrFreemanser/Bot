@@ -58,6 +58,7 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
         if isinstance(error, NotEnoughPointsError):
             return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}  Очень жаль, но у вас недостаточно {ctx.emotes.web_emotion.g10}", delete_after=5)
 
+<<<<<<< HEAD
     #@RoleShopSettings.role_shop.command(name="sell", inescapable=False)
     #async def sell_role(self, ctx, *, role: discord.Role = None):
     #     """Sell your already purchased role back to Role Shop giving you Guild Points worth value of same role."""
@@ -71,6 +72,21 @@ class RoleShop(RoleShopPoints, RoleShopSettings):
     #         await ctx.guild_profile.roleshop.sell_role(profile, role.id)
     #         await ctx.author.remove_roles(role)
     #         await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    You sold {role.name} earning {_role.points} золотых монет.")
+=======
+    @RoleShopSettings.role_shop.command(name="sell", inescapable=False)
+    async def sell_role(self, ctx, *, role: discord.Role = None):
+         """Sell your already purchased role back to Role Shop giving you Guild Points worth value of same role."""
+         # TODO: Let Guild Administrators decide if members can sell role.
+         profile = await self.bot.profile_cache.get_guild_profile(ctx.author.id, ctx.guild.id)
+         role = await self._get_role(ctx, role, profile.roleshop.roles)
+         _role = ctx.guild_profile.roleshop.roles.get(role.id)
+         if _role not in profile.roleshop.roles:
+             return await ctx.send_line(f"{ctx.emotes.web_emotion.xx}    You haven't purchased {role.name} yet.")
+         if await ctx.confirm(f"⚠    Are you sure to sell {role.name}?"):
+             await ctx.guild_profile.roleshop.sell_role(profile, role.id)
+             await ctx.author.remove_roles(role)
+             await ctx.send_line(f"{ctx.emotes.web_emotion.galka}    You sold {role.name} earning {_role.points} золотых монет.")
+>>>>>>> fix_bug
 
     @RoleShopSettings.role_shop.group(name="equip", aliases=["надеть"], invoke_without_command=True, inescapable=False)
     async def equip_role(self, ctx, *, role: discord.Role = None):

@@ -1,4 +1,9 @@
 # ! Important discord configs.
 
+<<<<<<< HEAD
 token: "you-token"    # ENV: DISCORD_TOKEN
 client_id: id_token
+=======
+token: ""    # ENV: DISCORD_TOKEN
+client_id: 696360078999289927
+>>>>>>> fix_bug

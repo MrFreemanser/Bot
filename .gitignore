@@ -36,3 +36,4 @@ ENV/
 
 # Log files
 logs/
+cfg/core/discord.yaml

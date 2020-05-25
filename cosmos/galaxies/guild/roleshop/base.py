@@ -24,9 +24,9 @@ class RoleShopBase(GuildBaseCog):
         menu.embed.set_author(name=title, icon_url=ctx.author.avatar_url)
         response = await menu.wait_for_response()
         msg = menu.message
-        await msg.delete(delay=30)
+        await msg.delete(delay=10)
         return ctx.guild.get_role(response.entry.id)
-        
+
 
     @staticmethod
     async def _paginator_parser(ctx, roleshop_role, _):
@@ -46,7 +46,7 @@ class RoleShopBase(GuildBaseCog):
         paginator.embed.set_author(name="Магазин ролей", icon_url=ctx.author.avatar_url)
         await paginator.paginate()
 
-    
+
     @role_shop.error
     async def role_shop_error(self, ctx, error):    # TODO: Override Command with custom dispatch_error method.
         if isinstance(error, NotRoleShopRoleError):
